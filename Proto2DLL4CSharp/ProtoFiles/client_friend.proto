@@ -1,0 +1,90 @@
+/********************************************************************
+*	filename: 	client_friend.proto
+*	purpose:	好友
+*
+*	created:	rzh 2015/05/12
+*********************************************************************/
+
+option optimize_for = LITE_RUNTIME;
+package PROTO_FRIEND;
+
+///	CMD_TYPE_FRIEND		=23;
+
+
+enum CLT_CMD 
+{
+	CM_REQUEST			= 1;	///申请加好友
+	CM_ACCEPT			= 2;	///接受
+	CM_REFUSE			= 3;	///拒绝
+	CM_IGNORE			= 4;	///忽略
+	CM_DELETE			= 5;	///删除
+};
+
+enum SVR_CMD {
+	SM_UPDATE_FRIEND		= 1;	/// 更新好友信息
+};
+
+enum SVR_RESULT
+{
+	SE_SUCCESS					= 1;	///操作成功
+	SE_ALREADY_REQUESTED		= 2;	///已申请过
+	SE_IS_FRIEND				= 3;	///已经是好友
+	SE_IN_REQUESING_LIST		= 4;	///对方已在申请列表中
+	SE_REQUEST_FULL				= 5;	///申请太多了，请等待回复
+	SE_MY_FRIEND_LIST_FULL		= 6;	///我的好友列表满了
+	SE_OPPOSITE_FRIEND_FULL		= 7;	///对方好友列表已满
+	SE_INVALID_NAME				= 8;	///无效的名字
+	SE_TIMEOUT					= 9;	///已经过期了
+	SE_INVALID_REQUEST_PARAM	= 10;	///无效的参数
+	SE_SERVER_ERROR				= 11;	///什么鬼……
+};
+
+/// 关系类型
+enum RELATION_TYPE
+{
+	REL_T_WAIT					= 1;	///待处理
+	REL_T_REFUSE				= 2;	///已悲剧（被拒）
+	REL_T_WE_ARE_FRIEND			= 3;	///是朋友咯，根据成为朋友的时间，排序显示申请列表。
+}
+
+///好友更新操作
+enum FRIEND_DATA_OPE
+{
+	FDO_INIT					= 1;	///初始化
+	FDO_NEW						= 2;	///新增
+	FDO_UPDATE					= 3;	///更新
+	FDO_DELETE					= 4;	///删除
+}
+
+/// 关系数据
+message TSM_FRIEND_DATA
+{
+	required int32				relation_id	= 1;	/// 关系ID
+	required FRIEND_DATA_OPE	operation	= 2;	/// 操作
+	repeated string 			role_id		= 3;	/// 对方角色ID
+	repeated RELATION_TYPE		type		= 4;	/// 与我的关系
+	repeated uint32				time		= 5;	/// 最近一次关系变化的时间
+	repeated string				name		= 6;	/// 名字
+	repeated uint32				head_icon	= 7;	/// 头像
+	repeated uint32				vip_level	= 8;	/// vip等级
+	repeated uint32				role_level	= 9;	/// 角色等级
+	repeated uint32				offline_time= 10;	/// 离线时间
+}
+
+/// 更新已有关系，包括拒绝，接受，忽略，删除
+message TCM_UPDATE_RELATION
+{
+	required int32			relation_id	= 1;	/// 关系ID，对于关系的更新，必须使用ID
+}
+/// 增加好友
+message TCM_ADD_FRIEND
+{
+	required string			role_name	= 1;	/// 添加目标的名字
+}
+
+/// 服务器消息
+message TSM_FRIEND_LIST
+{
+	repeated SVR_RESULT			result		= 1;	/// 操作结果，如果有的话
+	repeated TSM_FRIEND_DATA 	friend_list	= 2;	/// 关系列表
+};

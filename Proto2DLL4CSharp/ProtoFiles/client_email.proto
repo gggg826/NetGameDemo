@@ -1,0 +1,215 @@
+/********************************************************************
+*	filename: 	client_Email.proto
+*	purpose:	邮件相关协议
+*	
+*	created:	wj 2015.4.7
+*********************************************************************/
+option optimize_for = LITE_RUNTIME;
+package PROTO_EMAIL;
+
+///	CMD_TYPE_EMAIL		=13;		///邮件系统
+
+enum CLT_CMD
+{
+	CM_NEXTPAGE	= 1;	///下一页
+	CM_REMOVE	= 2;	///删除邮件
+	CM_GETITEM	= 3;	///获取物品
+	CM_ONEKEYDEL	= 4;	///一键删除
+	CM_MARKREAD	= 5;	///设置已读
+	CM_ONEKYGETITEM	= 6;	///一键收附件
+	CM_GETITEM_1	= 7;	///获得一封邮件内所有道具
+};
+
+
+enum SVR_CMD
+{
+	SM_ERROR	= 1;	///错误返回
+	SM_CLEAR	= 2;	///清除所有邮件
+	SM_LIST		= 3;	///返回邮件
+	SM_APPEND	= 4;	///增加新邮件
+	SM_REMOVE	= 5;	///移除邮件
+	SM_REMOVEITEM	= 6;	///移除邮件内物品
+	SM_TOTALCOUNT	= 7;	///更新数量信息
+	SM_GOTITEMS	= 8;	///一键领取获得的道具列表
+};
+
+///邮件内的道具
+message TItemInfo
+{
+	required uint32 position= 1;	///物品位置
+	required uint32	id	= 2;	///物品资料id
+	required uint32	count	= 3;	///物品数量
+};
+
+///邮件类型
+enum	EEmailType
+{
+	EmailType_SYS		= 1;	///官方邮件
+	EmailType_Normal	= 2;	///普通邮件
+}
+
+///操作类型
+enum	EOPType
+{
+	EOPType_ReadDel		= 1;	///收取后删除
+	EOPType_ReadNoDel	= 2;	///收取后不删除
+}
+//邮件模板，如果不等于ETemplate_NULL，则忽略title和content，用对应的模板内的文字
+enum	ETemplate
+{
+	ETemplate_NULL			= 1;
+	ETemplate_MercenaryItem		= 2;    ///佣兵升级因背包满而返还物品
+	ETemplate_BattleItem		= 3;    ///战斗奖励
+	ETemplate_BattleFirstPassItem	= 4;    ///战斗首次通关奖励
+	ETemplate_BattleFastPassItem	= 5;	///扫荡奖励
+	ETemplate_ChapterItem		= 6;	///章节阶段奖励
+	ETemplate_MercenaryExpiration	= 7;	///佣兵过期删除提示，模板参数为佣兵的STDID
+	ETemplate_SkinExpiration	= 8;	///皮肤过期删除提示，模板参数为皮肤的STDID
+	ETemplate_SignInReward		= 9;	///普通签到奖励
+	ETemplate_ExtractReward		= 10;   ///佣兵武器抽取的奖励
+	ETemplate_WeaponExpired		= 11;   ///武器到期
+	ETemplate_WeaponLevelUpReturnExpCard	= 12;   ///武器升级返还经验卡
+	ETemplate_DiamondSignInReward		= 13;   ///钻石签到奖励
+	ETemplate_VIPSignInReward		= 14;   ///VIP签到奖励
+	ETemplate_Task			= 15;   ///任务
+    ETemplate_SkinAddHead   = 16;   ///增加皮肤送头像
+	ETemplate_ActivityBattle = 17;   ///活动关卡奖励（背包不足发邮件）
+    ETemplate_MercenaryAddHead = 18; ///解锁佣兵送头像
+    ETemplate_RankingChallenge = 19; ///极限模式排行榜奖励
+	ETemplate_SignInTotalReward = 20; ///累计签到奖励
+    ETemplate_KingOfPositionWorship = 21;///阵地之王膜拜奖励
+    ETemplate_KingOfPositionLuck = 22;///阵地之王幸运奖励
+    ETemplate_KingOfPositionSuperior = 23;///阵地之王排名奖励
+    ETemplate_OpenServerRanking_1   = 24;///开服活动冲榜奖励
+    ETemplate_OpenServerRanking_2   = 25;///开服活动冲榜奖励
+    ETemplate_OpenServerRanking_3   = 26;///开服活动冲榜奖励
+    ETemplate_OpenServerRanking_4   = 27;///开服活动冲榜奖励
+    ETemplate_OpenServerRanking_5   = 28;///开服活动冲榜奖励
+	ETemplate_WorldBossRanking		= 29;///世界boss排名奖励
+	ETemplate_WorldBossKill			= 30;///世界boss击杀奖励
+    ETemplate_FirstRecharge         = 31;///首次充值
+    ETemplate_RankingMPVP           = 32;///特别行动排行榜奖励
+    ETemplate_ArmyAssigning         = 33;///军团金库分配
+	ETemplate_ArmyBossRankReward	= 34;///军团boss排名奖励
+	ETemplate_ArmyBossRandomLoot	= 35;///军团boss击杀随机奖励
+	ETemplate_ArmyBossParticipation	= 36;///军团boss参与奖，背包满发邮件
+    ETemplate_ArmyJoin              = 37;///加入军团邮件
+    ETemplate_ArmyCreate            = 38;///创建军团邮件
+    ETemplate_ArmyOfflineLong       = 39;///长时间不在线被撤职
+    ETemplate_WeekCard_Reward   = 40;///周卡奖励
+	ETemplate_MonthCard_Reward   = 41;///月卡奖励
+    ETemplate_ArmyKick              = 42;///被踢出军团
+}
+
+
+///邮件信息
+message TEmail
+{
+	required EEmailType mailType	= 1;	///邮件类型
+	required EOPType    opType	= 2;	///操作类型
+	required uint32	EmailId		= 3;	///邮件id
+	required string from_roleid	= 4;	///发送者id
+	required string from_rolename	= 5;	///发送者名字
+	required bool	isread		= 6;	///是否已读
+	required string title		= 7;	///标题
+	required string content		= 8;	///内容
+	repeated TItemInfo items	= 9;	///物品列表
+  	required string SendTime	= 10;	///邮件发送时间
+	required uint32	RetentionDay	= 11;	///保留天数
+	required uint32 Template	= 12;   ///模板类型
+	repeated string TemplateParam	= 13;	///模板参数
+};
+
+
+enum EEmailError
+{
+	EEmailError_ItemPackFull	= 1;	///背包满
+	EEmailError_GoldFull		= 2;	///金币满
+	EEmailError_WeaponFull		= 3;	///武器满
+	EEmailError_MercenaryFull	= 4;	///佣兵满
+	EEmailError_SkinFull		= 5;	///皮肤满
+}
+
+///	SM_ERROR	= 1;	///错误返回
+message TSM_ERROR
+{
+	required EEmailError error	= 1;	///错误信息	
+}
+
+///	SM_CLEAR	= 2;	///清除所有邮件
+
+///	SM_LIST		= 3;	///返回邮件
+message TSM_LIST
+{
+	repeated TEmail Emails		= 2;	///目前每次只发送20条
+};
+
+
+///	SM_APPEND	= 4;	///增加新邮件
+message TSM_APPEND
+{
+	required TEmail Email		= 1;	///邮件
+};
+
+///	SM_REMOVE	= 5;	///移除邮件
+message TSM_REMOVE
+{
+	required uint32	EmailId		= 1;	///要删除的邮件id
+};
+
+
+///	SM_REMOVEITEM	= 6;	///移除邮件内物品
+message TSM_REMOVEITEM
+{
+	required uint32	EmailId		= 1;	///邮件id
+	repeated uint32	Positions	= 2;	///位置
+};
+
+///	CM_NEXTPAGE	= 1;	///下一页
+message TCM_NEXTPAGE			
+{					
+	required uint32	EmailId		= 1;	///目前收到的所有邮件中,最小的一个邮件id,
+};						///一般情况下是邮件列表的最后一条,通过append
+						///添加的邮件id都比通过列表添加的大
+
+///	CM_REMOVE	= 2;	///删除邮件
+message TCM_REMOVE
+{
+	required uint32	EmailId		= 1;	///删除邮件
+};
+
+///	CM_GETITEM	= 3;	///获取物品
+message TCM_GETITEM
+{
+	required uint32	EmailId		= 1;	///邮件id
+	required uint32 position	= 2;	///物品位置
+};
+
+///	CM_ONEKEYDEL	= 4;	///一键删除
+
+
+///	CM_MARKREAD	= 5;	///设置已读
+message TCM_MARKREAD
+{
+	required uint32	EmailId		= 1;	///邮件id	
+}
+
+///	CM_ONEKYGETITEM	= 6;	///一键收附件
+message TCM_ONEKYGETITEM
+{
+	required EEmailType mailType	= 1;	///邮件类型
+}
+message TCM_GETITEM_1
+{
+	required uint32	EmailId		= 1;	///邮件id
+}
+message TSM_TOTALCOUNT
+{
+	required uint32 noreadcount	= 1;	///未读数量
+	required uint32	totalcount	= 2;	///总数量
+}
+
+message TSM_GOTITEMS
+{
+	repeated TItemInfo	items	= 1;	///道具列表
+}

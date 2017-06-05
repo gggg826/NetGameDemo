@@ -1,0 +1,90 @@
+/********************************************************************
+*	filename: 	client_chat.proto
+*	purpose:	聊天相关协议,只包括世界聊天和私聊
+*	
+*	created:	wj 2015/4/8
+*********************************************************************/
+option optimize_for = LITE_RUNTIME;
+package PROTO_CHAT;
+
+///	CMD_TYPE_CHAT		=14;		///聊天系统
+
+
+enum CLT_CMD
+{
+	CM_CHAT_PUBLIC          = 0;	///大厅聊天
+	CM_CHAT_PRIVATE_ID      = 1;	///id私聊
+	CM_CHAT_PRIVATE_NAME    = 2;	///名字私聊
+}
+
+enum SVR_CMD
+{
+	SM_CHAT			= 0;	///聊天内容
+	SM_CHAT_ERROR		= 1;	///错误提示
+	SM_SYSMSG		= 2;	///系统公告
+    SM_CHAT_LOCKINFO= 3;    ///禁言信息
+}
+
+///	CM_CHAT_PUBLIC          = 0;	///大厅聊天
+message TCM_CHAT_PUBLIC
+{
+	required string Text = 1;	//聊天内容
+}
+
+///	CM_CHAT_PRIVATE_ID      = 1;	///私聊
+message TCM_CHAT_PRIVATE_ID
+{
+	required string RoleId	= 1;	//接收者的ID
+	required string Text	= 2;	//聊天内容
+}
+
+///	CM_CHAT_PRIVATE_NAME    = 2;	///私聊
+message TCM_CHAT_PRIVATE_NAME
+{
+	required string RoleName = 1;	//接收者的名字
+	required string Text = 2;	//聊天内容
+}
+
+///聊天类型
+enum EChatType
+{
+	emChatType_Public	= 0;	//大厅
+	emChatType_Private	= 1;	//私聊
+	emChatType_Private_self = 2;	//私聊回显
+	_CHAT_TYPE_COUNT_	= 3;	
+}
+
+///	SM_CHAT			= 0;	///聊天内容
+message TSM_CHAT
+{
+	required uint32 Type		= 1;	//EChatType
+	required string RoleId		= 2;	//发送者的ID
+	required string RoleName	= 3;	//发送者的名字
+	required uint32 Vip		= 4;	//发送者的VIP等级
+	required string Text		= 5;	//聊天内容
+}
+
+///聊天错误
+enum EChatError
+{
+	EChatError_Offline	= 1;	///角色不在线
+}
+
+///	SM_CHAT_ERROR		= 1;	///错误提示
+message TSM_CHAT_ERROR
+{
+	required EChatError Error= 1;	///错误编号
+}
+
+///	SM_SYSMSG		= 2;	///系统公告
+message TSM_SYSMSG
+{
+	required string Text = 1;	//公告内容
+}
+
+/// SM_CHAT_LOCKINFO= 3;    ///禁言信息
+message TSM_CHAT_LOCKINFO
+{
+    required uint64 UnLockTime  = 1;     //解禁时间，time_t
+	required string Reason      = 2;	 //禁言原因
+}
