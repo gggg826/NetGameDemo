@@ -7,15 +7,17 @@ using System.Threading;
 //3.Semaphore 阻塞进程
 //4.去借鉴抢滩的Protobuf管理
 
-namespace Server
+namespace SocketSystem
 {
     public class SocketSever
     {
         private Semaphore m_Semaphore;
+        private int m_MaxClient;
 
-        public SocketSever()
+        public SocketSever(int maxClient)
         {
-
+            m_MaxClient = maxClient;
+            m_Semaphore = new Semaphore(m_MaxClient, m_MaxClient);
         }
 
         public void ClientStart()
