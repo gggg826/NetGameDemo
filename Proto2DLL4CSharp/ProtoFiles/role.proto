@@ -1,0 +1,183 @@
+/********************************************************************
+*	filename: 	client_role.proto
+*	purpose:	主角色基本信息
+*
+*	created:	wj 2015/04/5
+*********************************************************************/
+
+
+option optimize_for = LITE_RUNTIME;
+package PROTO_ROLE;
+
+///	CMD_TYPE_ROLE		=11;		///角色相关协议
+
+
+enum CLT_CMD 
+{
+    CM_CREATE_ROLE			=1;	///创建角色
+	CM_CHANGE_NAME			=2;	///更改名称
+	CM_CHANGE_HEAD_ICON		=3;	///更换头像
+	CM_CHANGE_HEAD_FRAME	=4;	///更换相框
+};
+
+enum SVR_CMD {
+    SM_NO_ROLE		= 1;	///无角色,客户端弹出创建角色UI
+    SM_CREATE_ROLE	= 2;	///创建角色结果
+    SM_ROLE_INFO	= 3;	///角色信息
+    SM_EXP		= 4;	///更新经验
+    SM_GOLD		= 5;	///更新金币
+    SM_LEVEL		= 6;	///更新等级
+    SM_BUNKER_LEVEL	= 7;	///更新堡垒等级
+    SM_LOCK_INFO    = 8;    ///封号消息
+	SM_CHANGE_ICON_RESULT 	= 9;	///更换头像结果
+	SM_UPDATE_HEAD_ICON		= 10;	///更新头像
+	SM_CHANGE_FRAME_RESULT 	= 11;	///更换相框结果
+	SM_UPDATE_HEAD_FRAME	= 12;	///更新相框
+	SM_CHANGE_RESULT		= 13;	///改名结果
+	SM_CHANGE_ROLENAME		= 14;	///更新名字
+    SM_PVEMONEY		        = 15;	///更新PVE金币
+    SM_PVPMONEY		        = 16;	///更新PVP金币
+    SM_SERVER_CFG_NO_ROLE	= 17;	///服务器禁止创建角色
+};
+
+enum LIMIT
+{
+    option allow_alias = true;
+	LIMIT_GOLD	= 99999999;
+    LIMIT_PVEMONEY	= 99999999;
+    LIMIT_PVPMONEY	= 99999999;
+};
+
+///    CM_CREATE_ROLE=1;	///创建角色
+message TCM_CREATE_ROLE
+{
+	required string	RoleName = 1;	///角色名字
+	required uint32	HeadIcon = 2;	///头像
+	optional bool	IsUnion	= 3;	///是否为公会用户
+}
+
+message TCM_CHANGE_ROLE_NAME
+{
+	required string	RoleName = 1;	///角色名字
+}
+
+message TCM_CHANGE_ICON
+{
+	required int32 icon		= 1;	///头像ID或者相框ID
+}
+
+enum ECreateRoleError
+{
+	eCreateRoleError_NameInvalid = 1;	///名字包含非法字符
+	eCreateRoleError_NameExist = 2;		///名字已经存在
+}
+
+enum EChangeRoleError
+{
+	eChangeRoleError_NameInvalid 	= 1;	///名字包含非法字符
+	eChangeRoleError_NameExist 		= 2;	///名字已经存在
+	eChangeRoleError_Diamond		= 3;	///钻石不足
+}
+
+enum EChangeHeadIconError
+{
+	eChangeHeadIconError_invalid	=1;	///无效的头像
+}
+
+///    SM_NO_ROLE		= 1;	///无角色,客户端弹出创建角色UI
+
+///    SM_CREATE_ROLE	= 2;	///创建角色结果
+message TSM_CREATE_ROLE
+{
+	required uint32 Error = 1;	///错误信息
+}
+
+message TSM_CHANGE_ROLE_NAME
+{
+	required uint32 Error = 1;	///错误信息
+}
+
+///角色基本信息
+message TcltRoleInfo
+{
+	required string Id      	= 1;	///uid
+	required string Name    	= 2;	///名字	
+	required uint32 Level   	= 3;	///等级
+	required uint32	Exp     	= 4;	///当前经验
+	required uint32 Gold    	= 5;	///金币
+	required uint32 BunkerLV	= 6;	///堡垒等级
+	required uint32 HeadIcon	= 7;	///角色头像
+	required uint32 HeadFrame	= 8;	///角色相框
+	required uint32 PveMoney	= 9;	///PVE金币
+	required uint32 PvpMoney   	= 10;	///PVP金币
+	required uint32 NumberID	= 11;   ///唯一的数字ID
+	required uint64 CreateTime	= 12;	///角色创建时间
+}
+
+///    SM_ROLE_INFO	= 3;	///角色信息
+message TSM_ROLE_INFO
+{
+	required TcltRoleInfo RoleInfo = 1;	///角色信息	
+}
+
+///    SM_EXP		= 4;	///更新经验
+message TSM_EXP
+{
+	required uint32	exp	= 1;	///经验值
+}
+
+///    SM_GOLD		= 5;	///更新金币
+message TSM_GOLD
+{
+	required uint32	gold	= 1;	
+}
+
+///    SM_LEVEL		= 6;	///更新等级
+message TSM_LEVEL
+{
+	required uint32	level	= 1;
+}
+///    SM_BUNKER_LEVEL = 7;    ///更新堡垒等级
+message TSM_BUNKER_LEVEL
+{
+	required uint32	level	= 1;
+}
+/// SM_LOCK_INFO    = 8;    ///封号消息
+message TSM_LOCK_INFO
+{
+    required uint64 UnLockTime  = 1;     //解禁时间，time_t
+	required string Reason      = 2;	 //禁言原因
+}
+
+message TSM_ROLE_NAME
+{
+	required string Name		= 1;	///角色名称
+}
+
+message TSM_CHANGE_HEAD_ICON_RESULT
+{
+	required EChangeHeadIconError result	= 1; 
+}
+
+message TSM_CHANGE_HEAD_FRAME_RESULT
+{
+	required EChangeHeadIconError result	= 1; 
+}
+
+message TSM_UPDATE_HEAD_ICON
+{
+	required uint32 head_icon	= 1;
+}
+
+message TSM_UPDATE_HEAD_FRAME
+{
+	required uint32 head_frame	= 1;
+}
+message TSM_PVEMONEY
+{
+	required uint32	value	= 1;	
+}
+message TSM_PVPMONEY
+{
+	required uint32	value	= 1;	
+}

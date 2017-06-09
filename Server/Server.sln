@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketSystem", "SocketSystem\SocketSystem.csproj", "{DA9A5D16-8BCA-413C-8418-63AC6F441CE8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proto", "Proto\Proto.csproj", "{6043ED12-F29E-48C5-B358-0B512D7736E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DA9A5D16-8BCA-413C-8418-63AC6F441CE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA9A5D16-8BCA-413C-8418-63AC6F441CE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA9A5D16-8BCA-413C-8418-63AC6F441CE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6043ED12-F29E-48C5-B358-0B512D7736E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6043ED12-F29E-48C5-B358-0B512D7736E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6043ED12-F29E-48C5-B358-0B512D7736E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6043ED12-F29E-48C5-B358-0B512D7736E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
