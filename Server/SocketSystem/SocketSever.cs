@@ -29,6 +29,7 @@ namespace SocketSystem
             {
                 UserToken token = new UserToken();
 
+				UserTokenPool.ReturnOne(token);
             }
         }
 
@@ -109,7 +110,7 @@ namespace SocketSystem
             {
                 byte[] bytes = new byte[token.ReceiveSAEA.BytesTransferred];
                 Buffer.BlockCopy(token.ReceiveSAEA.Buffer, 0, bytes, 0, token.ReceiveSAEA.BytesTransferred);
-                token.ReceiveMsg(bytes);
+                token.ReceiveBytes(bytes);
             }
             else
             {
