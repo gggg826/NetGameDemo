@@ -24,12 +24,11 @@ namespace SocketSystem
             m_MaxClient = maxClient;
             m_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             m_Semaphore = new Semaphore(m_MaxClient, m_MaxClient);
-
             for (int i = 0; i < m_MaxClient; i++)
             {
                 UserToken token = new UserToken();
 
-				UserTokenPool.ReturnOne(token);
+                UserToken.ReleaseUserTokenObject(token);
             }
         }
 
@@ -55,7 +54,7 @@ namespace SocketSystem
                 {
                     HandlerManager.ClientClose(token, error);
                     token.Close();
-                    UserTokenPool.ReturnOne(token);
+                    UserToken.ReleaseUserTokenObject(token);
                     m_Semaphore.Release();
                 }
             }
@@ -80,7 +79,7 @@ namespace SocketSystem
 
         private void ProcessAccept(SocketAsyncEventArgs e)
         {
-            UserToken token = UserTokenPool.GetOne();
+            UserToken token = UserToken.GetUserTokenObject();
             token.ConnectSocket = e.AcceptSocket;
             HandlerManager.ClientConnet(token);
             StartReceive(token);

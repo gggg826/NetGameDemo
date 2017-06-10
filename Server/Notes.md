@@ -14,3 +14,7 @@
 1. BitConverter接口可以转换基本类型和byte[]
 2. MemoryStream.GetBuffer()返回从其创建此流的无符号字节数组
 3. MemoryStream.ToArray()将流内容写入字节数组，而与 System.IO.MemoryStream.Position 属性无关。常与2一起使用？
+
+###设计技巧
+1. 对象池可以与对象写在同一个类里，**对象池和对象池方法采用Static**, 取对象GetXXXObject, 回收对象ReleaseXXXObject，这两个方法对应写，Get时赋值的变量（通过传参）Release时全部置空或恢复默认值。对象池提供TotalXXXObjectCount属性、GetCachedXXXObject和RecycleXXXObject方法。
+2. Socket发送数据时Push到Queue中，接收时每接收1byte放入List<byte>中
