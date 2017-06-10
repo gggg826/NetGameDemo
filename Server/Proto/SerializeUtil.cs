@@ -1,76 +1,90 @@
-﻿using System;
+﻿/********************************************************************
+*	created:	11/6/2017   2:46
+*	filename: 	serializeutil
+*	author:		Bing Lau
+*	
+*	purpose:	只序列化/反序列化消息的内容(.proto文件中的message类型)，不包含协议
+*	
+*********************************************************************/
+
+using System;
 using System.IO;
 
 namespace Proto
 {
-	public class SerializeUtil
-	{
-		private static PROTO m_Proto;
+    public class SerializeUtil
+    {
+        private static PROTO m_Proto;
 
-		private static PROTO GetPROTOObject()
-		{
-			if (m_Proto == null)
-				m_Proto = new PROTO();
-			return m_Proto;
-		}
+        private static PROTO GetPROTOObject()
+        {
+            if (m_Proto == null)
+                m_Proto = new PROTO();
+            return m_Proto;
+        }
 
-		public static byte[] SerializeProto<T>(MessageObject messageObj)
-		{
-			byte[] typeBuff = BitConverter.GetBytes(messageObj.CmdType);
-			byte[] idBuff = BitConverter.GetBytes(messageObj.CmdID);
-            
-			byte[] messageBuff = null;
-			using (MemoryStream ms = new MemoryStream())
-			{
-				PROTO proto = GetPROTOObject();
-				if(proto.IsDefined(typeof(T)))
-				{
-					proto.Serialize(ms, messageObj.Message);
-					messageBuff = ms.GetBuffer();
-					messageBuff = ms.ToArray();
-				}
-			}
+        /// <summary>
+        /// 序列化message
+        /// </summary>
+        /// <typeparam name="T">message类型</typeparam>
+        /// <param name="obj">message</param>
+        /// <returns></returns>
+        public static byte[] SerializeProto<T>(object obj)
+        {
+            if (obj == null)
+                return null;
 
-			int typeLength = typeBuff.Length;
-			int idLength = idBuff.Length;
-			int messageLength = messageBuff.Length;
+            byte[] buff = null;
+            try
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    PROTO proto = GetPROTOObject();
+                    if (proto.IsDefined(typeof(T)))
+                    {
+                        proto.Serialize(ms, obj);
+                        buff = ms.GetBuffer();
+                        buff = ms.ToArray();
+                        buff = buff.Length == 0 ? null : buff;
+                    }
+                }
+            }
+            catch (Exception)
+            {
 
-			byte[] buff = new byte[typeLength + idLength + messageLength];
-			Buffer.BlockCopy(typeBuff, 0, buff, 0, typeLength);
-			Buffer.BlockCopy(idBuff, 0, buff, typeLength, idLength);
-			Buffer.BlockCopy(messageBuff, 0, buff, typeLength + idLength, messageLength);
+            }
+            return buff;
+        }
 
-			return buff;
-		}
+        /// <summary>
+        /// 反序列化message
+        /// </summary>
+        /// <typeparam name="T">message类型</typeparam>
+        /// <param name="buff">message的byte[]</param>
+        /// <returns></returns>
+        public static object DeSerializeProto<T>(byte[] buff)
+        {
+            if (buff == null)
+                return null;
+            object obj = null;
 
-		public static T DeSerializeProto<T>(byte[] buff)
-		{
-			if (buff == null)
-				return default(T);
-			object obj = null;
+            try
+            {
+                using (MemoryStream ms = new MemoryStream(buff))
+                {
+                    Type type = typeof(T);
+                    PROTO proto = GetPROTOObject();
+                    if (proto.IsDefined(type))
+                    {
+                        obj = proto.Deserialize(ms, obj, type);
+                    }
+                }
+            }
+            catch (Exception)
+            {
 
-			try
-			{
-				using (MemoryStream ms = new MemoryStream(buff))
-				{
-					Type type = typeof(T);
-					PROTO proto = GetPROTOObject();
-					if(proto.IsDefined(type))
-					{
-						obj = proto.Deserialize(ms, obj, type);
-					}
-					else
-					{
-						return default(T);
-					}
-				}
-			}
-			catch (Exception e)
-			{
-				return default(T);
-			}
-
-			return (T)obj;
-		}
-	}
+            }
+            return obj;
+        }
+    }
 }

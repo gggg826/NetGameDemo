@@ -8,8 +8,8 @@ namespace Proto
 {
     public class MessageObject
     {
-        private uint m_CmdType;
-        public uint CmdType
+        private byte m_CmdType;
+        public byte CmdType
         {
             get
             {
@@ -22,8 +22,8 @@ namespace Proto
             }
         }
 
-        private uint m_CmdID;
-        public uint CmdID
+        private byte m_CmdID;
+        public byte CmdID
         {
             get
             {
@@ -50,7 +50,7 @@ namespace Proto
             }
         }
 
-        public MessageObject(uint cmdType, uint cmdID, object message)
+        public MessageObject(byte cmdType, byte cmdID, object message)
         {
             m_CmdType = cmdType;
             m_CmdID = cmdID;
@@ -64,7 +64,7 @@ namespace Proto
         /// <param name="cmdID"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static MessageObject GetMessageObject(uint cmdType, uint cmdID, object message)
+        public static MessageObject GetMessageObject(byte cmdType, byte cmdID, object message)
         {
             MessageObject obj = GetCachedMessageObject();
             obj.CmdType = cmdType;
