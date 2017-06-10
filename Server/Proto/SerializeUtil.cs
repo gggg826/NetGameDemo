@@ -16,9 +16,9 @@ namespace Proto
 
 		public static byte[] SerializeProto<T>(MessageObject messageObj)
 		{
-			byte[] typeBuff = System.BitConverter.GetBytes(messageObj.CmdType);
+			byte[] typeBuff = BitConverter.GetBytes(messageObj.CmdType);
 			byte[] idBuff = BitConverter.GetBytes(messageObj.CmdID);
-
+            
 			byte[] messageBuff = null;
 			using (MemoryStream ms = new MemoryStream())
 			{
@@ -36,7 +36,7 @@ namespace Proto
 			int messageLength = messageBuff.Length;
 
 			byte[] buff = new byte[typeLength + idLength + messageLength];
-			System.Buffer.BlockCopy(typeBuff, 0, buff, 0, typeLength);
+			Buffer.BlockCopy(typeBuff, 0, buff, 0, typeLength);
 			Buffer.BlockCopy(idBuff, 0, buff, typeLength, idLength);
 			Buffer.BlockCopy(messageBuff, 0, buff, typeLength + idLength, messageLength);
 
