@@ -1,4 +1,5 @@
 ﻿using SocketSystem;
+using Protocol;
 
 namespace Server
 {
@@ -6,6 +7,7 @@ namespace Server
     {
         static void Main(string[] args)
         {
+            ProtocolDefine.InitializeTankNetProtocolCM();
             SocketSever server = new SocketSever(10);
             server.HandlerManager = new HandlerManager();
             server.ServerStart(6655);
