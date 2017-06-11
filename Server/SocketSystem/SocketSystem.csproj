@@ -47,9 +47,9 @@
     <Compile Include="UserToken.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Proto\Proto.csproj">
+    <ProjectReference Include="..\Proto\Protocol.csproj">
       <Project>{6043ed12-f29e-48c5-b358-0b512d7736e5}</Project>
-      <Name>Proto</Name>
+      <Name>Protocol</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SocketSystem;
 
 namespace Server
 {
@@ -10,6 +6,12 @@ namespace Server
     {
         static void Main(string[] args)
         {
+            SocketSever server = new SocketSever(10);
+            server.HandlerManager = new HandlerManager();
+            server.ServerStart(6655);
+            while (true)
+            {
+            }
         }
     }
 }

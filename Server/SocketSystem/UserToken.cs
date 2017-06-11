@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net.Sockets;
-using Proto;
+using Protocol;
 
 namespace SocketSystem
 {
@@ -74,10 +74,12 @@ namespace SocketSystem
             SendBytes();
         }
         
-        public void WriteMessage(byte[] buff)
+        public void WriteMessage<T>(MessageObject obj)
         {
             if (ConnectSocket == null)
                 return;
+
+            byte[] buff = ProtocolManager.GetBuffFromMessageObject<T>(obj);
             byte[] sendBuff = EncodUtil.Encode(buff);
             m_SendQueue.Enqueue(sendBuff);
             if(!m_IsSending)
@@ -97,7 +99,7 @@ namespace SocketSystem
             }
             //反序列化buff
             object message = ProtocolManager.GetMessageObjectFromBuff(buff);
-            HandlerManager.ReceiveMsg(this, message);
+            HandlerManager.ReceiveMessage(this, message);
             ReadMessage();
         }
 

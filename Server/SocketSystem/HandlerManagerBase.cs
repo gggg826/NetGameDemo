@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Protocol;
 
 namespace SocketSystem
 {
@@ -10,7 +6,7 @@ namespace SocketSystem
     {
         public abstract void ClientConnet(UserToken token);
 
-        public abstract void ReceiveMsg(UserToken token, object message);
+        public abstract void ReceiveMessage(UserToken token, object message);
 
         public abstract void ClientClose(UserToken token, string error);
     }

@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using ProtoBuf;
 
-namespace Proto
+namespace Protocol
 {
     public class ProtocolManager
     {

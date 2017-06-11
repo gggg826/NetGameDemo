@@ -9,7 +9,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace Proto
+namespace Protocol
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct Package_Head

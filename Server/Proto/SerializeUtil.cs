@@ -10,7 +10,7 @@
 using System;
 using System.IO;
 
-namespace Proto
+namespace Protocol
 {
     public class SerializeUtil
     {

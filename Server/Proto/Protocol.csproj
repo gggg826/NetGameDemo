@@ -7,8 +7,8 @@
     <ProjectGuid>{6043ED12-F29E-48C5-B358-0B512D7736E5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Proto</RootNamespace>
-    <AssemblyName>Proto</AssemblyName>
+    <RootNamespace>Protocol</RootNamespace>
+    <AssemblyName>Protocol</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

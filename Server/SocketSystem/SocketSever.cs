@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 
 //1.socket
@@ -36,7 +35,7 @@ namespace SocketSystem
             }
         }
 
-        public void ClientStart(int port)
+        public void ServerStart(int port)
         {
             try
             {
