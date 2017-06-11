@@ -26,8 +26,12 @@ namespace SocketSystem
             m_Semaphore = new Semaphore(m_MaxClient, m_MaxClient);
             for (int i = 0; i < m_MaxClient; i++)
             {
-                UserToken token = new UserToken();
-
+                UserToken token      = new UserToken();
+                token.HandlerManager = HandlerManager;
+                token.OnProcessSend  = ProcessSend;
+                token.OnCloseProcess = ClientClose;
+                token.ReceiveSAEA.Completed += OnIOCompleted;
+                token.SendSAEA.Completed    += OnIOCompleted;
                 UserToken.ReleaseUserTokenObject(token);
             }
         }
@@ -126,7 +130,7 @@ namespace SocketSystem
             if (e.SocketError != SocketError.Success)
                 ClientClose(token, e.SocketError.ToString());
             else
-                token.Writed();
+                token.OnSent();
         }
 
         private void OnAcceptCompleted(object sender, SocketAsyncEventArgs e)
@@ -134,7 +138,7 @@ namespace SocketSystem
             ProcessAccept(e);
         }
 
-        private void OnIOCompleted(SocketAsyncEventArgs e)
+        private void OnIOCompleted(object sender, SocketAsyncEventArgs e)
         {
             if (e.LastOperation == SocketAsyncOperation.Receive)
                 ProcessReceive(e);

@@ -97,11 +97,11 @@ namespace Proto
 
         public static bool Memcpy(ref List<char> buff, int buffIndex, char[] s, int charCount)
         {
-            byte[] buffer = ToBytes(buff.ToArray());
+            byte[] buffer = CharsToBytes(buff.ToArray());
             bool flag = Memcpy(ref buffer, buffIndex, s, charCount);
             if (flag)
             {
-                buff = new List<char>((IEnumerable<char>)ToChars(buffer));
+                buff = new List<char>((IEnumerable<char>)BytesToChars(buffer));
             }
             return flag;
         }
@@ -110,7 +110,7 @@ namespace Proto
         {
             try
             {
-                byte[] buffer = ToBytes(s);
+                byte[] buffer = CharsToBytes(s);
                 int index = buffIndex;
                 for (int i = 0; i < charCount; i++)
                 {
@@ -276,11 +276,11 @@ namespace Proto
             StringBuilder builder = new StringBuilder();
             if (IS_UTF8_ENCODING)
             {
-                str = ToString(Encoding.UTF8.GetBytes(chr));
+                str = BytesToString(Encoding.UTF8.GetBytes(chr));
             }
             else if (IS_UNICODE_ENCODING)
             {
-                str = ToString(Encoding.Unicode.GetBytes(chr));
+                str = BytesToString(Encoding.Unicode.GetBytes(chr));
             }
             else
             {

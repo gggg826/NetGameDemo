@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Net.Sockets;
+using Proto;
 
 namespace SocketSystem
 {
     public class UserToken
     {
+        public delegate void ProcessSend(SocketAsyncEventArgs e);
+        public ProcessSend OnProcessSend;
+        public delegate void CloseProcess(UserToken token, string error);
+        public CloseProcess OnCloseProcess;
+
         public Socket ConnectSocket;
         public SocketAsyncEventArgs ReceiveSAEA;
         public SocketAsyncEventArgs SendSAEA;
@@ -19,7 +25,10 @@ namespace SocketSystem
         public UserToken()
         {
             ReceiveSAEA    = new SocketAsyncEventArgs();
+            ReceiveSAEA.UserToken = this;
+            ReceiveSAEA.SetBuffer(new byte[1024], 0, 1024);
             SendSAEA       = new SocketAsyncEventArgs();
+            SendSAEA.UserToken = this;
 
             m_IsReading    = false;
             m_RecieveCache = new List<byte>();
@@ -33,7 +42,25 @@ namespace SocketSystem
             if (!m_IsReading)
             {
                 m_IsReading = true;
-                ReadingMessage();
+                ReadMessage();
+            }
+        }
+
+        public void SendBytes()
+        {
+            if (m_SendQueue.Count == 0)
+            {
+                m_IsSending = false;
+                return;
+            }
+
+            byte[] buff = m_SendQueue.Dequeue();
+            SendSAEA.SetBuffer(buff, 0, buff.Length);
+            bool result = ConnectSocket.SendAsync(SendSAEA);
+            if (!result)
+            {
+                if (OnProcessSend != null)
+                    OnProcessSend(SendSAEA);
             }
         }
 
@@ -42,12 +69,25 @@ namespace SocketSystem
 
         }
 
-        public void Writed()
+        public void OnSent()
         {
-
+            SendBytes();
+        }
+        
+        public void WriteMessage(byte[] buff)
+        {
+            if (ConnectSocket == null)
+                return;
+            byte[] sendBuff = EncodUtil.Encode(buff);
+            m_SendQueue.Enqueue(sendBuff);
+            if(!m_IsSending)
+            {
+                m_IsSending = true;
+                SendBytes();
+            }
         }
 
-        private void ReadingMessage()
+        private void ReadMessage()
         {
             byte[] buff = EncodUtil.Decode(ref m_RecieveCache);
             if (buff == null)
@@ -56,9 +96,9 @@ namespace SocketSystem
                 return;
             }
             //反序列化buff
-            object message = new object();//TODO
+            object message = ProtocolManager.GetMessageObjectFromBuff(buff);
             HandlerManager.ReceiveMsg(this, message);
-            ReadingMessage();
+            ReadMessage();
         }
 
 

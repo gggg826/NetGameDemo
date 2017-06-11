@@ -7,8 +7,7 @@ namespace Proto
 {
     public class ProtocolManager
     {
-        private static Dictionary<int, Func<Package_Head, byte[], MessageObject>> m_ReceiveProtocolMapping = new Dictionary<int, Func<byte, byte, byte[], MessageObject>>();
-		//private static Dictionary<int, Func<byte, byte, MessageObject, byte[]>> m_SendProtocolMapping = new Dictionary<int, Func<byte, byte, MessageObject, byte[]>>();
+        private static Dictionary<int, Func<Package_Head, byte[], MessageObject>> m_ReceiveProtocolMapping = new Dictionary<int, Func<Package_Head, byte[], MessageObject>>();
 		private static Dictionary<int, Func<MessageObject, byte[]>> m_SendProtocolMapping = new Dictionary<int, Func<MessageObject, byte[]>>();
 
 
