@@ -7,7 +7,10 @@ namespace SocketSystem
     {
         public static byte[] Encode(byte[] buff)
         {
-            int int32Length = sizeof(int);
+			if (buff == null)
+				return null;
+
+			int int32Length = sizeof(int);
             byte[] lenghtBuff = BitConverter.GetBytes(buff.Length);
 
             byte[] result = new byte[buff.Length + int32Length];
@@ -18,6 +21,9 @@ namespace SocketSystem
 
         public static byte[] Decode(ref List<byte> cache)
         {
+			if (cache.Count == 0)
+				return null;
+
             byte[] cachedBuff = cache.ToArray();
             int int32length = sizeof(int);
             if (cachedBuff.Length < int32length)

@@ -23,21 +23,23 @@ namespace SocketSystem
             m_MaxClient = maxClient;
             m_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             m_Semaphore = new Semaphore(m_MaxClient, m_MaxClient);
-            for (int i = 0; i < m_MaxClient; i++)
-            {
-                UserToken token      = new UserToken();
-                token.HandlerManager = HandlerManager;
-                token.OnProcessSend  = ProcessSend;
-                token.OnCloseProcess = ClientClose;
-                token.ReceiveSAEA.Completed += OnIOCompleted;
-                token.SendSAEA.Completed    += OnIOCompleted;
-                UserToken.ReleaseUserTokenObject(token);
-            }
         }
 
         public void ServerStart(int port)
         {
-            try
+			//初始化UserToken池不放在构造函数里是因为函数构造时外部还没有对Handler进行赋值
+			for (int i = 0; i < m_MaxClient; i++)
+			{
+				UserToken token = new UserToken();
+				token.HandlerManager = HandlerManager;
+				token.OnProcessSend = ProcessSend;
+				token.OnCloseProcess = ClientClose;
+				token.ReceiveSAEA.Completed += OnIOCompleted;
+				token.SendSAEA.Completed += OnIOCompleted;
+				UserToken.ReleaseUserTokenObject(token);
+			}
+
+			try
             {
                 m_Socket.Bind(new IPEndPoint(IPAddress.Any, port));
                 m_Socket.Listen(m_MaxClient);
