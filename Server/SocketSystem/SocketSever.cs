@@ -49,6 +49,7 @@ namespace SocketSystem
             {
                 Console.WriteLine(e.Message);
             }
+            Console.WriteLine("服务器启动...");
         }
 
         public void ClientClose(UserToken token, string error)
@@ -73,7 +74,7 @@ namespace SocketSystem
                 e.Completed += new EventHandler<SocketAsyncEventArgs>(OnAcceptCompleted);
             }
             else
-                e = null;
+                e.AcceptSocket = null;
 
             m_Semaphore.WaitOne();
             bool result = m_Socket.AcceptAsync(e);

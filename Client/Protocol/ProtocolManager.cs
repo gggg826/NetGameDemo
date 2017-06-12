@@ -13,11 +13,18 @@ namespace Protocol
 
         public static MessageObject GetMessageObjectFromBuff(byte[] buff)
         {
+            if (m_ReceiveProtocolMapping.Count == 0)
+            {
+                Console.WriteLine("获取MessageObject出错，接收协议池为空");
+                return null;
+            }
+
             int headBuffLength = ProtoStructDefine.Package_head_Length;
-            if (buff == null || buff.Length < headBuffLength || m_ReceiveProtocolMapping.Count == 0)
+            if (buff == null || buff.Length < headBuffLength)
                 return null;
 
             byte[] headBuff = new byte[headBuffLength];
+            Buffer.BlockCopy(buff, 0, headBuff, 0, headBuffLength);
             Package_Head head = (Package_Head)ByteUtil.BytesToStuct(headBuff, typeof(Package_Head), headBuffLength);
 
             int uniqueID = GetUniqueID(head.CmdType, head.CmdID);
@@ -26,27 +33,33 @@ namespace Protocol
                 byte[] messageBuff = null;
                 int messageBuffLength = buff.Length - headBuffLength;
                 if (messageBuffLength != 0)
+                {
                     messageBuff = new byte[messageBuffLength];
+                    Buffer.BlockCopy(buff, headBuffLength, messageBuff, 0, messageBuffLength);
+                }
 
                 Func<Package_Head, byte[], MessageObject> func = m_ReceiveProtocolMapping[uniqueID];
                 return func(head, messageBuff);
             }
-                return new MessageObject(head.CmdType, head.CmdID, null);
+            return new MessageObject(head.CmdType, head.CmdID, null);
 
         }
 
         public static byte[] GetBuffFromMessageObject<T>(MessageObject obj)
         {
             if (obj == null || m_SendProtocolMapping.Count == 0)
+            {
+                Console.WriteLine("获取byte[]出错，发送协议池为空");
                 return null;
-            
+            }
+
             int uniqueID = GetUniqueID(obj.CmdType, obj.CmdID);
             if (m_SendProtocolMapping.ContainsKey(uniqueID))
             {
                 Func<MessageObject, byte[]> func = m_SendProtocolMapping[uniqueID];
                 return func(obj);
             }
-                return null;
+            return null;
         }
 
         public static void AddReceiveProtocol(byte cmdType, byte cmdID)
