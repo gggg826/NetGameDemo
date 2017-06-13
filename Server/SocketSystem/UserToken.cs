@@ -8,6 +8,7 @@
 				13/6/2017   12:03
 *********************************************************************/
 
+using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using Protocol;
@@ -27,7 +28,7 @@ namespace SocketSystem
         public HandlerManagerBase HandlerManager;
 
         private List<byte> m_RecieveCache;
-        private bool m_IsReading;
+        private bool m_IsReceiving;
 
         private Queue<byte[]> m_SendQueue;
         private bool m_IsSending;
@@ -40,7 +41,7 @@ namespace SocketSystem
             SendSAEA       = new SocketAsyncEventArgs();
             SendSAEA.UserToken = this;
 
-            m_IsReading    = false;
+            m_IsReceiving    = false;
             m_RecieveCache = new List<byte>();
             m_IsSending    = false;
             m_SendQueue    = new Queue<byte[]>();
@@ -49,9 +50,9 @@ namespace SocketSystem
         public void ReceiveBytes(byte[] bytes)
         {
             m_RecieveCache.AddRange(bytes);
-            if (!m_IsReading)
+            if (!m_IsReceiving)
             {
-                m_IsReading = true;
+                m_IsReceiving = true;
                 ReadMessage();
             }
         }
@@ -76,7 +77,17 @@ namespace SocketSystem
 
         public void Close()
         {
-
+			try
+			{
+				m_SendQueue.Clear();
+				m_RecieveCache.Clear();
+				m_IsReceiving = false;
+				m_IsSending = false;
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.Message);
+			}
         }
 
         public void OnSent()
@@ -104,7 +115,7 @@ namespace SocketSystem
             byte[] buff = EncodUtil.Decode(ref m_RecieveCache);
             if (buff == null)
             {
-                m_IsReading = false;
+                m_IsReceiving = false;
                 return;
             }
             //反序列化buff

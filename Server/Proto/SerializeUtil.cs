@@ -35,6 +35,7 @@ namespace Protocol
                 return null;
 
             byte[] buff = null;
+			Type type = typeof(T);
             try
             {
                 using (MemoryStream ms = new MemoryStream())
@@ -47,12 +48,16 @@ namespace Protocol
                         buff = ms.ToArray();
                         buff = buff.Length == 0 ? null : buff;
                     }
+					else
+					{
+						Console.WriteLine(string.Format("序列化 {0} 失败! Protobuf中并未定义此类型", type));
+					}
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-            }
+				Console.WriteLine(string.Format("序列化 {0} 失败! {1}", type, e.Message));
+			}
             return buff;
         }
 
@@ -66,24 +71,28 @@ namespace Protocol
         {
             if (buff == null)
                 return null;
-            object obj = null;
 
-            try
+            object obj = null;
+			Type type = typeof(T);
+			try
             {
                 using (MemoryStream ms = new MemoryStream(buff))
                 {
-                    Type type = typeof(T);
                     PROTO proto = GetPROTOObject();
                     if (proto.IsDefined(type))
                     {
                         obj = proto.Deserialize(ms, obj, type);
                     }
-                }
+					else
+					{
+						Console.WriteLine(string.Format("序列化 {0} 失败! Protobuf中并未定义此类型", type));
+					}
+				}
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-            }
+				Console.WriteLine(string.Format("序列化 {0} 失败! {1}", type, e.Message));
+			}
             return obj;
         }
     }

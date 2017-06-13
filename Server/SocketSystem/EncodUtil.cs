@@ -12,6 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+//Visio Packet  粘包
+//Pack          组包
+//Unpack        解包
+	
 namespace SocketSystem
 {
 	public class EncodUtil
