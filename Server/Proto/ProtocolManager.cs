@@ -1,5 +1,14 @@
-﻿using System;
-using System.IO;
+﻿/********************************************************************
+*
+*	file base:	ProtocolManager
+*	
+*	purpose:	协议管理类，同时包含对Messagebox的序列化和反序列化
+*	
+*	created:	BingLau 
+				13/6/2017   11:52
+*********************************************************************/
+
+using System;
 using System.Collections.Generic;
 using ProtoBuf;
 

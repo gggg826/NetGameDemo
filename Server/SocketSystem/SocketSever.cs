@@ -1,4 +1,15 @@
-﻿using System;
+﻿/********************************************************************
+*
+*	file base:	socketsever
+*	
+*	purpose:	网络传输的主要类，采用socket
+*				参照MSDN官方SocketAsyncEventArgs文档中的例子
+*	
+*	created:	BingLau 
+				13/6/2017   11:02
+*********************************************************************/
+
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -77,9 +88,9 @@ namespace SocketSystem
                 e.AcceptSocket = null;
 
             m_Semaphore.WaitOne();
-            bool result = m_Socket.AcceptAsync(e);
-            if (!result)
-                ProcessAccept(e);
+            bool willRaiseEvent = m_Socket.AcceptAsync(e);
+            if (!willRaiseEvent)
+				ProcessAccept(e);
         }
 
 
@@ -96,9 +107,9 @@ namespace SocketSystem
         {
             try
             {
-                bool result = token.ConnectSocket.ReceiveAsync(token.ReceiveSAEA);
-                if(!result)
-                {
+                bool willRaiseEvent = token.ConnectSocket.ReceiveAsync(token.ReceiveSAEA);
+                if(!willRaiseEvent)
+				{
                     ProcessReceive(token.ReceiveSAEA);
                 }
             }

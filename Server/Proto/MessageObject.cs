@@ -1,8 +1,16 @@
-﻿using System;
+﻿/********************************************************************
+*
+*	file base:	MessageObject
+*	
+*	purpose:	MessageObject数据结构和对象池，数据结构包含传输协议和消息体
+*				用于序列化之前和反序列化之后
+*	
+*	created:	BingLau 
+				13/6/2017   11:47
+*********************************************************************/
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Protocol
 {

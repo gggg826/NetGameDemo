@@ -1,4 +1,14 @@
-﻿using System;
+﻿/********************************************************************
+*
+*	file base:	HandlerManager
+*	
+*	purpose:	游戏子模块管理中心
+*	
+*	created:	BingLau 
+				13/6/2017   11:59
+*********************************************************************/
+
+using System;
 using Protocol;
 using SocketSystem;
 using Server.Handler;

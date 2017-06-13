@@ -1,4 +1,14 @@
-﻿using System.Collections.Generic;
+﻿/********************************************************************
+*
+*	file base:	UserToken
+*	
+*	purpose:	接收、发送数据处理
+*	
+*	created:	BingLau 
+				13/6/2017   12:03
+*********************************************************************/
+
+using System.Collections.Generic;
 using System.Net.Sockets;
 using Protocol;
 

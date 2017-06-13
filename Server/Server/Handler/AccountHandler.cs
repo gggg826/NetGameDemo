@@ -1,8 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/********************************************************************
+*
+*	file base:	AccountHandler
+*	
+*	purpose:	帐户消息处理
+*	
+*	created:	BingLau 
+				13/6/2017   12:04
+*********************************************************************/
+
 using Protocol;
 using SocketSystem;
 

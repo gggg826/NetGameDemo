@@ -1,4 +1,14 @@
-﻿using System;
+﻿/********************************************************************
+*
+*	file base:	EncodUtil
+*	
+*	purpose:	粘包编码、解码
+*	
+*	created:	BingLau 
+				13/6/2017   12:00
+*********************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 

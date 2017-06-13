@@ -1,4 +1,14 @@
-﻿using System;
+﻿/********************************************************************
+*
+*	file base:	RoleHandler
+*	
+*	purpose:	角色消息处理
+*	
+*	created:	BingLau 
+				13/6/2017   12:05
+*********************************************************************/
+
+using System;
 using Protocol;
 using SocketSystem;
 
