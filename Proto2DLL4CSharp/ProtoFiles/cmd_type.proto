@@ -1,64 +1,14 @@
 /********************************************************************
-*	filename: 	client_cmd_type.proto
+*	filename: 	cmd_type.proto
 *	purpose:	指令类型定义
 *
-*	created:	wj 2015/04/2	17:36
+*	created:	binglau 2017/07/20
 *********************************************************************/
 option optimize_for = LITE_RUNTIME;
 package PROTO_CMD_TYPE;
 
 enum CMD_TYPE
 {
-	CMD_TYPE_ROOM_MAIN	=10;		///大厅服务器主模块协议
+	CMD_TYPE_ACCOUNT	=10;		///大厅服务器主模块协议
 	CMD_TYPE_ROLE		=11;		///角色相关协议
-	CMD_TYPE_SETTING	=12;		///设置
-	CMD_TYPE_EMAIL		=13;		///邮件系统
-	CMD_TYPE_CHAT		=14;		///聊天系统
-	CMD_TYPE_ITEM		=15;		///道具背包
-	CMD_TYPE_DIAMOND	=16;		///钻石相关协议
-	CMD_TYPE_WEAPONS	=17;		///武器相关协议
-	CMD_TYPE_MERCENARY	=18;		///佣兵相关协议
-	CMD_TYPE_CHAPTER	=19;		///关卡
-	CMD_TYPE_SQUADRON	=20;		///战队
-	CMD_TYPE_SIGNIN		=21;		///签到
-	CMD_TYPE_SHOP		=22;		///抽卡，各种商店
-	CMD_TYPE_FRIEND		=23;		///好友
-	CMD_TYPE_TASK		=24;		///任务
-	CMD_TYPE_VIP		=25;		///VIP
-	CMD_TYPE_ACTIVITY	=26;		///活动公告
-	CMD_TYPE_HEAD_ICON	=27;		///玩家头像
-	CMD_TYPE_RECHARGE	=28;		///充值
-	CMD_TYPE_GIFTCODE	=29;		///礼包码兑换
-	CMD_TYPE_RECHARGE_ACTIVITY	=30;	///充值活动
-	CMD_TYPE_MILITARY   = 31;		///军资金库
-	CMD_TYPE_RANKING    = 32;		///排行榜
-	CMD_TYPE_LOGINREWARD= 33;		///7日登陆奖励
-	CMD_TYPE_EXTREME_CHALLENGE=34;		///极限挑战
-	CMD_TYPE_ACTIVITIES_BATTLE=35;		///活动战场（材料关……）
-	CMD_TYPE_GAMELOG=36;			///新手日志打点
-	CMD_TYPE_FUNCTIONOPEN = 37;		///功能模块开启
-	CMD_TYPE_MULTI_PVE = 38;		/// 多人PVE协议
-	CMD_TYPE_PREDEFINESQUADRON = 39;	///预定义战队
-	CMD_TYPE_LUCKY_GOLD = 40; 		 ///招财活动
-	CMD_TYPE_OPENSERVER7DAY = 41;		///开服7日活动
-	CMD_TYPE_KINGOFPOSITION = 42;		///阵地之王
-	CMD_TYPE_DISCOUNT = 43;   		///打折爆发
-	CMD_TYPE_TOPRANKING = 44;		///打榜活动
-	CMD_TYPE_ACTIVITY_TASK = 45;		///活动任务
-    CMD_TYPE_CUMULATIVEONLINE = 46;     ///每日累计在线时长奖励
-    CMD_TYPE_ARMY_FRAME = 47;           ///军团主框架
-	CMD_TYPE_SKILL	= 48;			/// 技能
-	CMD_TYPE_ARMY_GROUP_BOSS = 49;	/// 军团boss
-	CMD_TYPE_ARMY_WAR_COLLEGE = 50;	/// 军团战争学院
-
-
-	CMD_TYPE_COMMON		=98;		///
-	CMD_TYPE_ACTION		=99;		///战场内行为转发
-	CMD_TYPE_BATTLE_CHECK = 100; 	///战场数据校验
-	CMD_TYPE_AI			=101;		///跟AI服务器通讯的协议
-	CMD_TYPE_WORLDBOSS	=102;		///世界boss
-	CMD_TYPE_CUSTOM_SQUADRON	=103;	///自定义战队
-	CMD_TYPE_ACTION_ARMY = 104;		/// 军团BOSS action
-	
-	
-};
+}

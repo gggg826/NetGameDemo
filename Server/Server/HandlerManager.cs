@@ -46,6 +46,9 @@ namespace Server
             MessageObject obj = message as MessageObject;
             switch(obj.CmdType)
             {
+				case (byte)PROTO_CMD_TYPE.CMD_TYPE.CMD_TYPE_ACCOUNT:
+					m_AccountHandler.MessageReceive(token, obj);
+					break;
                 case (byte)PROTO_CMD_TYPE.CMD_TYPE.CMD_TYPE_ROLE:
                     m_RoleHandler.MessageReceive(token, obj);
                     break;
