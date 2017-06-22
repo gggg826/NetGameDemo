@@ -1,0 +1,5 @@
+- 需要单独定义一份一级协议文件，包含所有一级协议
+- 各文件中的package（命名空间）为PROTO_ + 文件名
+- 二级协议枚举起名为CLT_CMD或者SVR_CMD
+- message起名以T开头，比如TSM_XXXX或者TCM_XXXX
+- 除二级协议外的枚举起名以E开头，比如EChangeHeadIconError

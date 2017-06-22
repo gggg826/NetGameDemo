@@ -1,0 +1,14 @@
+/********************************************************************
+*	filename: 	cmd_type.proto
+*	purpose:	指令类型定义
+*
+*	created:	binglau 2017/07/20
+*********************************************************************/
+option optimize_for = LITE_RUNTIME;
+package PROTO_CMD_TYPE;
+
+enum CMD_TYPE
+{
+	CMD_TYPE_ACCOUNT	=10;		///大厅服务器主模块协议
+	CMD_TYPE_ROLE		=11;		///角色相关协议
+}
