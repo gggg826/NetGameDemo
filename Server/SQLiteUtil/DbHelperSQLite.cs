@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Specialized;
 using System.Data;
-using System.Configuration;
 using System.Data.SQLite;
+
 namespace SQLiteUtil
 {
     /// <summary>
@@ -13,9 +12,10 @@ namespace SQLiteUtil
     /// </summary>
     public abstract class DbHelperSQLite
     {
-        //数据库连接字符串(web.config来配置)，可以动态更改connectionString支持多数据库.		
-        //public static string connectionString = PubConstant.ConnectionString;
-		public static string connectionString = "";
+		//数据库连接字符串(web.config来配置)，可以动态更改connectionString支持多数据库.	
+		//Data Source=test.db;Pooling=true;FailIfMissing=false	
+		public static string connectionString = null;
+		//public static string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
 		public DbHelperSQLite()
         {
         }
@@ -90,6 +90,11 @@ namespace SQLiteUtil
         /// <returns>影响的记录数</returns>
         public static int ExecuteSql(string SQLString)
         {
+			if(string.IsNullOrEmpty(connectionString))
+			{
+				Console.WriteLine("connectionString is null or empty");
+				return 0;
+			}
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 using (SQLiteCommand cmd = new SQLiteCommand(SQLString, connection))
