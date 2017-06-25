@@ -31,4 +31,6 @@
 ###SQLite
 1. 连接路径：Data Source=|DataDirectory|\Data.db;Pooling=true;FailIfMissing=false
 2. 右击项目-属性-目标平台 要选为X64，否则报错
+3. 用select last_insert_rowid()来获取SQLite中最新添加自增ID,类似mySQL中的select @@IDENTITY as id,但SQLite的select last_insert_rowid()必须与插入在同一个SQLiteConnection中。[参考][http://www.cnblogs.com/adinet/archive/2012/08/28/2659479.html]
+4. SQLite自增数字主键必须指定为NULL值
 
